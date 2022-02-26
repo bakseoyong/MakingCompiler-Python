@@ -6,15 +6,15 @@ import Token
 current = 0
 
 class CharType(Enum):
-    Unknown = ''
-    WhiteSpace = ''
-    NumberLiteral = ''
-    StringLiteral = ''
-    IdentifierAndKeyword = ''
-    OperatorAndPunctuator = ''
+    Unknown = 'Unknown'
+    WhiteSpace = 'WhiteSpace'
+    NumberLiteral = 'NumberLiteral'
+    StringLiteral = 'StringLiteral'
+    IdentifierAndKeyword = 'IdentifierAndKeyword'
+    OperatorAndPunctuator = 'OperatorAndPunctuator'
 
 def getCharType(char):
-    if char == ' ' or char == '/t' or char == '/n' or char == '/r':
+    if char == ' ' or char == '\t' or char == '\n' or char == '\r':
         return CharType.WhiteSpace
     elif char.isdigit():
         return CharType.NumberLiteral
@@ -32,7 +32,7 @@ def isCharType(char, charType):
     if charType == CharType.NumberLiteral:
         return char.isdigit()
     elif charType == CharType.StringLiteral:
-        return char.isalpha()
+        return ord(char) >= 32 and ord(char) <= 126 and char != '\''
     elif charType == CharType.IdentifierAndKeyword:
         return char.isalpha() or char.isdigit()
     elif charType == CharType.OperatorAndPunctuator:
@@ -70,7 +70,7 @@ def scanStringLiteral(sourceCode):
     # '로 시작하니까 1 더하기
     current += 1 
 
-    while isCharType(sourceCode[sourceCode], CharType.StringLiteral):
+    while isCharType(sourceCode[current], CharType.StringLiteral):
         string += sourceCode[current]
         current += 1
 
@@ -82,11 +82,11 @@ def scanStringLiteral(sourceCode):
 
     return Token.Token(Token.Kind.StringLiteral, string)
 
-def scanIdentifierAndKeyword(soureCode):
+def scanIdentifierAndKeyword(sourceCode):
     global current
     string = ''
 
-    while isCharType(soureCode[soureCode], CharType.IdentifierAndKeyword):
+    while isCharType(sourceCode[current], CharType.IdentifierAndKeyword):
         string += sourceCode[current]
         current += 1
 
@@ -97,11 +97,11 @@ def scanIdentifierAndKeyword(soureCode):
 
     return Token.Token(kind, string)
 
-def scanOperatorAndPunctuator(soureCode):
+def scanOperatorAndPunctuator(sourceCode):
     global current
     string = ''
 
-    while isCharType(soureCode[soureCode], CharType.OperatorAndPunctuator):
+    while isCharType(sourceCode[current], CharType.OperatorAndPunctuator):
         string += sourceCode[current]
         current += 1
     # C의 count함수가 아닌 딕셔너리로 탐색하기 때문에 연산자에 판단에 코드를 작성하지 않아도 된다.
@@ -117,7 +117,7 @@ def scanOperatorAndPunctuator(soureCode):
     if Token.toKind(string) == Token.Kind.Unknown:
         print('Error : scanOperatorAndPunctuator')
 
-    return Token.Token(Token.Kind.OperatorAndPunctuator, string)
+    return Token.Token(Token.toKind(string), string)
 
 
 
@@ -130,9 +130,9 @@ def scan(sourceCode):
     result = []
 
     current = 0 
-
     while current < len(sourceCode):
         charType = getCharType(sourceCode[current])
+        print(charType)
         if charType == CharType.WhiteSpace:
             current += 1
         elif charType == CharType.NumberLiteral:
@@ -145,13 +145,10 @@ def scan(sourceCode):
             result.append(scanOperatorAndPunctuator(sourceCode))
         else:
             print('Error : scan error')
+            current += 1
 
     result.append(Token.Kind.EndOfToken)
 
     return result
 
 ###################################################################
-
-sourceCode = " "
-
-scan(sourceCode)

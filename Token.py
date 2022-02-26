@@ -94,6 +94,8 @@ kindToString = {
 }
 
 def toKind(string):
-    if kindToString[string]:
-        return kindToString[string]
-    return Kind.Unknown
+    try:
+        if kindToString[string]:
+            return kindToString[string]
+    except KeyError:
+        return Kind.Unknown
