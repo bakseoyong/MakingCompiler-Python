@@ -1,34 +1,32 @@
 from enum import Enum
-import collections
+#Token.py
+import Token
 
 #책에서는 포인터였지만 인덱스 값으로 선언
 current = 0
 
-#token.py에 있지만 웹에서 코딩이라 임시로 선언
-Token = namedtuple("Token", "kind string")
-
 class CharType(Enum):
-Unknown = ''
-WhiteSpace = ''
-NumberLiteral = ''
-StringLiteral = ''
-IdentifierAndKeyword = ''
-OperatorAndPunctuator = ''
+    Unknown = ''
+    WhiteSpace = ''
+    NumberLiteral = ''
+    StringLiteral = ''
+    IdentifierAndKeyword = ''
+    OperatorAndPunctuator = ''
 
 def getCharType(char):
-if char == ' ' or char == '/t' or char == '/n' or char == '/r':
-    return CharType.WhiteSpace
-elif char.isdigit():
-    return CharType.NumberLiteral
-elif char == '\'':
-    return CharType.StringLiteral
-elif char.isalpha():
-    return CharType.IdentifierAndKeyword
-elif 33 <= ord(char) and ord(char) and ord(char) != '\'' or
-    58 <= ord(char) and ord(char) <= 64 or
-    91 <= ord(char) and ord(char) <= 96 or
-    123 <= ord(char) and ord(char) <= 126:
-    return CharType.OperatorAndpnctuator
+    if char == ' ' or char == '/t' or char == '/n' or char == '/r':
+        return CharType.WhiteSpace
+    elif char.isdigit():
+        return CharType.NumberLiteral
+    elif char == '\'':
+        return CharType.StringLiteral
+    elif char.isalpha():
+        return CharType.IdentifierAndKeyword
+    elif 33 <= ord(char) and ord(char) and ord(char) != '\'' or \
+        58 <= ord(char) and ord(char) <= 64 or \
+        91 <= ord(char) and ord(char) <= 96 or \
+        123 <= ord(char) and ord(char) <= 126: 
+        return CharType.OperatorAndPunctuator
 
 def isCharType(char, charType):
     if charType == CharType.NumberLiteral:
@@ -39,9 +37,9 @@ def isCharType(char, charType):
         return char.isalpha() or char.isdigit()
     elif charType == CharType.OperatorAndPunctuator:
         #and 우선순위가 더 높다.
-        return ord(char) >= 33 and ord(char) <= 47 or
-        ord(char) >= 58 and ord(char) <= 63 or
-        ord(char) >= 91 and ord(char) <= 96 or
+        return ord(char) >= 33 and ord(char) <= 47 or \
+        ord(char) >= 58 and ord(char) <= 63 or \
+        ord(char) >= 91 and ord(char) <= 96 or \
         ord(char) >= 123 and ord(char) <= 126
     else:
         return False
@@ -49,59 +47,58 @@ def isCharType(char, charType):
 ################################################################################
 
 def scanNumberLiteral(sourceCode):
+    global current
     string = ''
+
     while isCharType(sourceCode[current], CharType.NumberLiteral):
         string += sourceCode[current]
         current += 1
     #실수일경우 .이 추가된다
     if sourceCode[current] == '.':
-        stirng += '.'
+        string += '.'
         current += 1
     while isCharType(sourceCode[current], CharType.NumberLiteral):
         string += sourceCode[current]
         current += 1
 
     #return Token(struct)
-    return Token(Kind.NumberLiteral, string)
-
-​
+    return Token.Token(Token.Kind.NumberLiteral, string)
 
 def scanStringLiteral(sourceCode):
+    global current
     string = ''
     # '로 시작하니까 1 더하기
     current += 1 
-    ​
+
     while isCharType(sourceCode[sourceCode], CharType.StringLiteral):
         string += sourceCode[current]
         current += 1
 
     #detect '
-    if soureCode[current] != '\'':
+    if sourceCode[current] != '\'':
         print('Error : scanStringLiteral')
         
     current += 1
 
-    return Token(Kind.StringLiteral, string)
-
-​
+    return Token.Token(Token.Kind.StringLiteral, string)
 
 def scanIdentifierAndKeyword(soureCode):
+    global current
     string = ''
-    ​
+
     while isCharType(soureCode[soureCode], CharType.IdentifierAndKeyword):
         string += sourceCode[current]
         current += 1
 
-    kind = toKind(string)
+    kind = Token.toKind(string)
 
-    if kind == Kind.Unknown:
-        kind = Kind.Identifier
+    if kind == Token.Kind.Unknown:
+        kind = Token.Kind.Identifier
 
-    return Token(kind, string)
-
-​
+    return Token.Token(kind, string)
 
 def scanOperatorAndPunctuator(soureCode):
+    global current
     string = ''
 
     while isCharType(soureCode[soureCode], CharType.OperatorAndPunctuator):
@@ -117,10 +114,10 @@ def scanOperatorAndPunctuator(soureCode):
     if len(string) == 0:
         print('Error : scanOperatorAndPunctuator')
     """
-    if toKind(string) == Kind.Unknown:
+    if Token.toKind(string) == Token.Kind.Unknown:
         print('Error : scanOperatorAndPunctuator')
-        
-    return Token(Kind.OperatorAndPunctuator, string)
+
+    return Token.Token(Token.Kind.OperatorAndPunctuator, string)
 
 
 
@@ -145,11 +142,11 @@ def scan(sourceCode):
         elif charType == CharType.IdentifierAndKeyword:
             result.append(scanIdentifierAndKeyword(sourceCode))
         elif charType == CharType.OperatorAndPunctuator:
-            #result.append(scanOperatorAndPunctuator(sourceCode))
+            result.append(scanOperatorAndPunctuator(sourceCode))
         else:
             print('Error : scan error')
 
-    result.append(Kind.EndOfToken)
+    result.append(Token.Kind.EndOfToken)
 
     return result
 

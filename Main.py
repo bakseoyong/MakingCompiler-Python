@@ -1,7 +1,9 @@
+import Scanner
+
 sourceCode = """
 function main() {
 print 'Hello, World';
 }
 """
 
-tokenList = scan(sourceCode)
+tokenList = Scanner.scan(sourceCode)
