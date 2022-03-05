@@ -1,4 +1,5 @@
 import Scanner
+import Parser
 
 sourceCode = """
 function main() {
@@ -7,6 +8,8 @@ function main() {
 """
 
 tokenList = Scanner.scan(sourceCode)
+syntaxTree = Parser.parse(tokenList)
+
 print(len(tokenList))
 
 for token in tokenList:

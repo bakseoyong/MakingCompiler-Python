@@ -48,7 +48,7 @@ class Kind(Enum):
     LeftBraket = "["
     RightBraket = "]"
 
-kindToString = {
+StringToKind = {
     "#unknown" : Kind.Unknown,
     "#EndOfToken" : Kind.EndOfToken,
     "null" : Kind.NullLiteral,
@@ -95,7 +95,14 @@ kindToString = {
 
 def toKind(string):
     try:
-        if kindToString[string]:
-            return kindToString[string]
+        if StringToKind[string]:
+            return StringToKind[string]
     except KeyError:
         return Kind.Unknown
+
+def toString(type):
+    if Kind[type]:
+        return Kind[type]    
+        #어떤 에러 생기는지 보고 예외 처리문 추가
+    
+    return ''
