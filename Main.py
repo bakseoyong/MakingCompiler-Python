@@ -10,8 +10,7 @@ function main() {
 tokenList = Scanner.scan(sourceCode)
 syntaxTree = Parser.parse(tokenList)
 
-"""
 print(len(tokenList))
 
 for token in tokenList:
-    print(token)"""
+    print(token)

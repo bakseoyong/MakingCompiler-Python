@@ -102,9 +102,10 @@ def scanOperatorAndPunctuator(sourceCode):
     string = ''
 
     while isCharType(sourceCode[current], CharType.OperatorAndPunctuator):
+        print(sourceCode[current])
         string += sourceCode[current]
         current += 1
-    # C의 count함수가 아닌 딕셔너리로 탐색하기 때문에 연산자에 판단에 코드를 작성하지 않아도 된다.
+    # C의 count함수가 아닌 딕셔너리로 탐색하기 때문에 연산자에 판단에 코드를 작성하지 않아도 된다. - 아니다
     """
     #C - search operator and punctuator
     while len(string) != 0 and toKind(string) == Kind.Unknown:
@@ -114,8 +115,14 @@ def scanOperatorAndPunctuator(sourceCode):
     if len(string) == 0:
         print('Error : scanOperatorAndPunctuator')
     """
-    if Token.toKind(string) == Token.Kind.Unknown:
-        print('Error : scanOperatorAndPunctuator')
+    # string을 toKind 에서 탐색해보고 없으면 식별자끼리 붙어있을 수도 있으므로 앞에서 하나씩 떼서 토큰화 해보기
+    if Token.toKind(string) == Token.Kind.Unknown and len(string) >= 2:
+        current -= (len(string) - 1)
+        string = string[0]
+
+        if Token.toKind(string) != Token.Kind.Unknown:
+            return Token.Token(Token.toKind(string), string)
+
 
     return Token.Token(Token.toKind(string), string)
 

@@ -8,10 +8,14 @@ tokens = None
 def skipCurrent(kind):
     global current
     global tokens
-
+    
     if tokens[current].kind != kind:
-        print('Error : skipCurrent - nead ', end =' ')
+        
+        print('Error : skipCurrent - need : ', end =' ')
         print(Token.toString(kind))
+        exit(1)
+    
+    current += 1
 
 def skipCurrentIf(kind):
     global current
