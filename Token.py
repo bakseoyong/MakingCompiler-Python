@@ -93,6 +93,51 @@ StringToKind = {
     "]" : Kind.RightBraket
 }
 
+kindToString = {
+    "#unknown" : Kind.Unknown,
+    "#EndOfToken" : Kind.EndOfToken,
+    "null" : Kind.NullLiteral,
+    "true" : Kind.TrueLiteral,
+    "false" : Kind.FalseLiteral,
+    "#Number" : Kind.NumberLiteral,
+    "#String" : Kind.StringLiteral,
+    "#identifier" : Kind.Identifier,
+    "function" : Kind.Function,
+    "return" : Kind.Return,
+    "var" : Kind.Variable,
+    "for" : Kind.For,
+    "break" : Kind.Break,
+    "continue" : Kind.Continue,
+    "if" : Kind.If,
+    "elif" : Kind.Elif,
+    "else" : Kind.Else,
+    "print" : Kind.Print,
+    "printLine" : Kind.PrintLine,
+    "and" : Kind.LogicalAnd,
+    "or" : Kind.LogicalOr,
+    "=" : Kind.Assignment,
+    "+" : Kind.Add,
+    "-" : Kind.Subtract,
+    "*" : Kind.Multiply,
+    "/" : Kind.Divide,
+    "%" : Kind.Modulo,
+    "==" : Kind.Equal,
+    "!=" : Kind.NotEqual,
+    "<" : Kind.LessThan,
+    ">" : Kind.GreaterThan,
+    "<=" : Kind.LessOrEqual,
+    ">=" : Kind.GreaterOrEqual,
+    "," : Kind.Comma,
+    ":" : Kind.Colon,
+    ";" : Kind.Semicolon,
+    "(" : Kind.LeftParen,
+    ")" : Kind.RightParen,
+    "{" : Kind.LeftBrace,
+    "}" : Kind.RightBrace,
+    "[" : Kind.LeftBraket,
+    "]" : Kind.RightBraket
+}
+
 def toKind(string):
     try:
         if StringToKind[string]:
@@ -101,8 +146,9 @@ def toKind(string):
         return Kind.Unknown
 
 def toString(type):
-    if Kind[type]:
-        return Kind[type]    
-        #어떤 에러 생기는지 보고 예외 처리문 추가
-    
-    return ''
+    try:
+        if isinstance(type, Kind):
+            return type.value
+    except KeyError:
+        print('해당 토큰이 존재하지 않습니다.')
+        exit(1)

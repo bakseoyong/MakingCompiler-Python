@@ -459,10 +459,10 @@ def parseFunction():
 
     result = Node.Function()
 
-    skipCurrent(tokens, Token.Kind.Function)
+    skipCurrent(Token.Kind.Function)
     result.name = tokens[current].string
-    skipCurrent(tokens, Token.Kind.Identifier)
-    skipCurrent(tokens, Token.Kind.LeftParen)
+    skipCurrent(Token.Kind.Identifier)
+    skipCurrent(Token.Kind.LeftParen)
     if tokens[current].kind != Token.Kind.RightParen:
         while True:
             result.parameters.append(tokens[current].string)
