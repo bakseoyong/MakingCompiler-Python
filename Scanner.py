@@ -132,7 +132,6 @@ def scan(sourceCode):
     current = 0 
     while current < len(sourceCode):
         charType = getCharType(sourceCode[current])
-        print(charType)
         if charType == CharType.WhiteSpace:
             current += 1
         elif charType == CharType.NumberLiteral:
