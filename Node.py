@@ -20,7 +20,7 @@ class Function(Statement):
 
 class Variable(Statement):
     name = ''
-    expressions = None
+    expression = None
 
     def print():
         print('Variable')
@@ -97,6 +97,22 @@ class GetElement(Expression):
     def print():
         print('GetElement')
 
+class SetElement(Expression):
+    sub = None
+    index = None
+    value = None
+
+    def print():
+        print('SetElement')
+
+class Relational(Expression):
+    kind = None
+    lhs = None
+    rhs = None
+
+    def print():
+        print('Relational')
+
 class Arithmetic(Expression):
     kind = None
     lhs = None
@@ -120,7 +136,7 @@ class Or(Expression):
         print('Or')
 
 class For(Statement):
-    varaible = None
+    variable = None
     condition = None
     expression = None
     block = []
