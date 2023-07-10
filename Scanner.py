@@ -102,10 +102,9 @@ def scanOperatorAndPunctuator(sourceCode):
     string = ''
 
     while isCharType(sourceCode[current], CharType.OperatorAndPunctuator):
-        print(sourceCode[current])
         string += sourceCode[current]
         current += 1
-    # C의 count함수가 아닌 딕셔너리로 탐색하기 때문에 연산자에 판단에 코드를 작성하지 않아도 된다. - 아니다
+    # C의 count함수가 아닌 딕셔너리로 탐색하기 때문에 연산자에 판단에 코드를 작성하지 않아도 된다.
     """
     #C - search operator and punctuator
     while len(string) != 0 and toKind(string) == Kind.Unknown:
