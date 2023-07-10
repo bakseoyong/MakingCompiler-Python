@@ -8,7 +8,7 @@ tokens = None
 def skipCurrent(kind):
     global current
     global tokens
-    
+
     if tokens[current].kind != kind:
         
         print('Error : skipCurrent - need : ', end =' ')
@@ -317,9 +317,9 @@ def parseVariable():
     result.name = tokens[current].string
     skipCurrent(Token.Kind.Identifier)
     skipCurrent(Token.Kind.Assignment)
-    result.expressions = parseExpression()
+    result.expression = parseExpression()
 
-    if result.expressions is None:
+    if result.expression is None:
         print('변수 선언에 초기화식이 없습니다')
         exit(1)
 
@@ -476,6 +476,7 @@ def parseFunction():
     skipCurrent(Token.Kind.RightParen)
     skipCurrent(Token.Kind.LeftBrace)
     result.block = parseBlock()
+    skipCurrent(Token.Kind.RightBrace)
 
     #return Function
     return result
